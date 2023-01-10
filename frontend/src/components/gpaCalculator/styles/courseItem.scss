@@ -1,4 +1,4 @@
-.entry { 
+.entry {
     text-align: center;
     width: 100%;
     display: flex;
@@ -8,7 +8,7 @@
 }
 
 .entry:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
 }
@@ -48,5 +48,4 @@
 
 .close {
     padding: 0% 0% 0% 0% !important;
-    
 }

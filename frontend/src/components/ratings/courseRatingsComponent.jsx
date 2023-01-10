@@ -1,10 +1,18 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Box, FormControl, IconButton, InputLabel, List, MenuItem, Select } from '@mui/material';
-import PropTypes from "prop-types";
+import {
+    Box,
+    FormControl,
+    IconButton,
+    InputLabel,
+    List,
+    MenuItem,
+    Select,
+} from '@mui/material';
+import PropTypes from 'prop-types';
 import { useEffect, useId, useState } from 'react';
-import ReviewItem from './reviewItem';
+import api from '../../utils/api';
 import CreateReviewComponent from './createReview';
-import api from "../../utils/api";
+import ReviewItem from './reviewItem';
 
 import './styles/styles.scss';
 
@@ -30,28 +38,21 @@ export default function CourseRatingsComponent(props) {
         try {
             if (update_type === 'create') {
                 const {
-                    data: {
-                        status: statusVal,
-                        data: dataValue
-                    }
-                } = await api.post("/reviews", packet);
-    
-                if (statusVal === "success") {
-                   // Time to update local state
-                   changeCourseReviews([...courseReviews, dataValue]);
+                    data: { status: statusVal, data: dataValue },
+                } = await api.post('/reviews', packet);
+
+                if (statusVal === 'success') {
+                    // Time to update local state
+                    changeCourseReviews([...courseReviews, dataValue]);
                 }
-    
             } else if (update_type === 'update') {
                 const {
-                    data: {
-                        status: statusVal,
-                        data: dataValue
-                    }
+                    data: { status: statusVal, data: dataValue },
                 } = await api.patch(`/reviews/${id}`, packet);
-    
-                if (statusVal === "success") {
+
+                if (statusVal === 'success') {
                     // Time to update local state
-                    let newCourseReview = []; 
+                    let newCourseReview = [];
                     for (let i = 0; i < courseReviews.length; i++) {
                         if (courseReviews[i]._id === dataValue._id) {
                             newCourseReview.push(dataValue);
@@ -68,30 +69,28 @@ export default function CourseRatingsComponent(props) {
     }
 
     function addButtonClick() {
-        modalDiv.style.display = "block";
+        modalDiv.style.display = 'block';
     }
 
     function closeButtonClick() {
-        modalDiv.style.display = "none";
+        modalDiv.style.display = 'none';
     }
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target === modalDiv) {
-            modalDiv.style.display = "none";
+            modalDiv.style.display = 'none';
         }
-    }
+    };
     // useEffect Hooks to generate state items
     // Get all reviews
     useEffect(() => {
-        const getReviews = async function() {
+        const getReviews = async function () {
             try {
                 let tempReviewList = [];
                 for (let i = 0; i < props.reviewList.length; i++) {
                     let val = props.reviewList[i];
                     const {
-                        data: {
-                            data: reviewData
-                        }
+                        data: { data: reviewData },
                     } = await api.get(`/reviews/${val}`);
                     tempReviewList.push(reviewData);
                 }
@@ -105,7 +104,7 @@ export default function CourseRatingsComponent(props) {
 
     // Generate filtered dropdown based on props
     useEffect(() => {
-        let tempList = []
+        let tempList = [];
         props.profData.forEach((val, idx) => {
             tempList.push(
                 <MenuItem value={val.profId} key={idx}>
@@ -119,79 +118,101 @@ export default function CourseRatingsComponent(props) {
     // Generate filtered reviews based on filterValue
     useEffect(() => {
         if (filterValue !== '') {
-            let filteredReviews = []
+            let filteredReviews = [];
             courseReviews.forEach((value, idx) => {
                 if (value['professor'] === filterValue) {
                     filteredReviews.push(
-                        <ReviewItem data={value} key={idx} reviewDataDispatcher={generateNewReviews} profData={props.profData}/>
-                    )
+                        <ReviewItem
+                            data={value}
+                            key={idx}
+                            reviewDataDispatcher={generateNewReviews}
+                            profData={props.profData}
+                        />
+                    );
                 }
             });
             changeFilteredReviews(filteredReviews);
         } else {
-            changeFilteredReviews(courseReviews.map((value, idx) => {
-                return (
-                    <ReviewItem data={value} key={idx} reviewDataDispatcher={generateNewReviews} profData={props.profData}/>
-                );
-            }));
+            changeFilteredReviews(
+                courseReviews.map((value, idx) => {
+                    return (
+                        <ReviewItem
+                            data={value}
+                            key={idx}
+                            reviewDataDispatcher={generateNewReviews}
+                            profData={props.profData}
+                        />
+                    );
+                })
+            );
         }
     }, [filterValue, courseReviews]);
 
     // Return Ratings component
     return (
-    <>
-        <Box className="ratingsComponent">
-            <Box className="ratingsButtonsDiv">
-                <IconButton aria-label="addReview" className='ratingsAddButton' onClick={addButtonClick}>
-                    <AddIcon />
-                </IconButton>
-                <FormControl className="ratingsFormControl">
-                    <InputLabel>{`Filter by Professor`}</InputLabel>
-                    <Select
-                        label={`Filter by Professor`}
-                        value={filterValue}
-                        onChange={(e) => {
-                            changeFilterValue(e.target.value);
-                        }}
-                        autoWidth
+        <>
+            <Box className="ratingsComponent">
+                <Box className="ratingsButtonsDiv">
+                    <IconButton
+                        aria-label="addReview"
+                        className="ratingsAddButton"
+                        onClick={addButtonClick}
                     >
-                        {filterDropdownList}
-                    </Select>
-                </FormControl>
+                        <AddIcon />
+                    </IconButton>
+                    <FormControl className="ratingsFormControl">
+                        <InputLabel>{`Filter by Professor`}</InputLabel>
+                        <Select
+                            label={`Filter by Professor`}
+                            value={filterValue}
+                            onChange={(e) => {
+                                changeFilterValue(e.target.value);
+                            }}
+                            autoWidth
+                        >
+                            {filterDropdownList}
+                        </Select>
+                    </FormControl>
+                </Box>
+                <Box className="createModal" id={modalId}>
+                    <Box
+                        className="ratingsCreateReview"
+                        sx={{
+                            backgroundColor: 'primary.background',
+                            borderRadius: 5,
+                        }}
+                    >
+                        <CreateReviewComponent
+                            reviewDispatcher={generateNewReviews}
+                            filterList={props.profData}
+                            filterField={'professor'}
+                            constantField={'course'}
+                            closeButtonfn={closeButtonClick}
+                        />
+                    </Box>
+                </Box>
+                <Box>
+                    <List>{filteredReviews}</List>
+                </Box>
             </Box>
-            <Box className='createModal' id={modalId}>
-                <Box className='ratingsCreateReview' sx={{
-                    backgroundColor: 'primary.background',
-                    borderRadius: 5
-                }}>
-                    <CreateReviewComponent 
-                        reviewDispatcher={generateNewReviews}
-                        filterList={props.profData}
-                        filterField={'professor'}
-                        constantField={'course'}
-                        closeButtonfn={closeButtonClick}
-                    />
-                </Box> 
-            </Box>
-            <Box>
-                <List>
-                    {filteredReviews}
-                </List>
-            </Box>
-        </Box>
-    </>);
-};
+        </>
+    );
+}
 
 // Define prop types for RatingsComponent
 CourseRatingsComponent.propTypes = {
-    profData: PropTypes.arrayOf(PropTypes.shape({
-        profName: PropTypes.string,
-        profId: PropTypes.string,
-        courseData: PropTypes.arrayOf(PropTypes.shape({
-            courseId: PropTypes.string,
-            term: PropTypes.string,
-            year: PropTypes.number
-        }))
-    })),
+    profData: PropTypes.arrayOf(
+        PropTypes.shape({
+            profName: PropTypes.string,
+            profId: PropTypes.string,
+            courseData: PropTypes.arrayOf(
+                PropTypes.shape({
+                    courseId: PropTypes.string,
+                    term: PropTypes.string,
+                    year: PropTypes.number,
+                })
+            ),
+        })
+    ),
     reviewList: PropTypes.arrayOf(PropTypes.string),
-}
+};

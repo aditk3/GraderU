@@ -1,16 +1,9 @@
-import React from 'react'
-import { Container } from '@mui/material'
-import FAQItem from './FAQItem'
-import AddIcon from '@mui/icons-material/Add';
-import { Box, FormControl, IconButton, InputLabel, List, MenuItem, Select } from '@mui/material';
-import axios from 'axios';
-import PropTypes from "prop-types";
-import { useEffect, useId, useState } from 'react';
-import Popup from 'reactjs-popup';
-import './styles/styles.scss';
+import { Box, List } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import React, { useEffect, useId, useState } from 'react';
 import CreateFAQ from './createFAQ';
-
+import FAQItem from './FAQItem';
+import './styles/styles.scss';
 
 function FAQComponent(props) {
     const [courseFAQs, setCourseFAQs] = useState([]);
@@ -26,12 +19,12 @@ function FAQComponent(props) {
         setCourseFAQs(temp);
     }, [props.FAQList]);
 
-    
-
     return (
         <>
             <Box className="ratingsComponent">
-                <Typography variant="h5" color="text.primary"
+                <Typography
+                    variant="h5"
+                    color="text.primary"
                     sx={{
                         textAlign: 'center',
                     }}
@@ -49,23 +42,24 @@ function FAQComponent(props) {
                     </IconButton>
                 </Box> */}
 
-                <Box className='createModalFAQ' id={modalId}>
-                    <Box className='faqCreateReview' sx={{
-                        backgroundColor: 'primary.background',
-                        borderRadius: 5
-                    }}>
+                <Box className="createModalFAQ" id={modalId}>
+                    <Box
+                        className="faqCreateReview"
+                        sx={{
+                            backgroundColor: 'primary.background',
+                            borderRadius: 5,
+                        }}
+                    >
                         <CreateFAQ modalDiv={modalDiv} />
                     </Box>
                 </Box>
 
                 <Box>
-                    <List>
-                        {courseFAQs}
-                    </List>
+                    <List>{courseFAQs}</List>
                 </Box>
             </Box>
-        </>);
+        </>
+    );
 }
 
-
-export default FAQComponent
+export default FAQComponent;

@@ -1,11 +1,18 @@
-import { Box, ListItem, ListItemAvatar, ListItemText, Rating, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import PropTypes from "prop-types";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import FaceIcon from '@mui/icons-material/Face';
-import { useEffect, useState } from "react";
-import api from "../../utils/api";
-import { padding } from "@mui/system";
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import {
+    Box,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Rating,
+    ToggleButton,
+    ToggleButtonGroup,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import api from '../../utils/api';
 
 function stringSearch(array, str) {
     if (str === null || str === undefined) return -1;
@@ -31,28 +38,33 @@ export default function ReviewItem(props) {
     const [mUserId, changeUserId] = useState(undefined);
 
     useEffect(() => {
-        const totalLength = (props.data["likes"].length + props.data["dislikes"].length) === 0 ? 1 : props.data["likes"].length + props.data["dislikes"].length;
-        changeLikeDislikeRatio(Math.floor((props.data["likes"].length / totalLength) * 100));
+        const totalLength =
+            props.data['likes'].length + props.data['dislikes'].length === 0
+                ? 1
+                : props.data['likes'].length + props.data['dislikes'].length;
+        changeLikeDislikeRatio(
+            Math.floor((props.data['likes'].length / totalLength) * 100)
+        );
     }, [props.data]);
 
     let profName = '';
     let courseTerm = '';
     let courseYear = '';
-    
+
     for (let i = 0; i < props.profData.length; i++) {
         let val = props.profData[i];
-        if (val["profId"] === props.data.professor) {
+        if (val['profId'] === props.data.professor) {
             for (let j = 0; j < val.courseData.length; j++) {
                 let course = val.courseData[j];
-                if (course["courseId"] === props.data.course) {
-                    profName = val["profName"];
-                    courseTerm = course["term"];
-                    courseYear = course["year"];
+                if (course['courseId'] === props.data.course) {
+                    profName = val['profName'];
+                    courseTerm = course['term'];
+                    courseYear = course['year'];
                     break;
                 }
             }
             break;
-        } 
+        }
     }
 
     const getUserId = async function () {
@@ -67,7 +79,7 @@ export default function ReviewItem(props) {
     };
 
     useEffect(() => {
-        const searchIds = async function() {
+        const searchIds = async function () {
             let userId = undefined;
             if (mUserId === undefined) {
                 userId = await getUserId();
@@ -92,74 +104,100 @@ export default function ReviewItem(props) {
             }
             changeLikeDislikeValue(null);
         };
-        
+
         searchIds();
     }, [props.data, mUserId]);
 
     return (
         <>
-        <ListItem alignItems="flex-start">
-            <Box sx={{
-                alignItems:"flex-start",
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignContent: 'center',
-                width: "100%",
-                backgroundColor: '#282828',
-                padding: 1,
-                borderRadius: 5,
-                boxShadow: "0px 5px 10px 0px rgba(0, 0, 0, 0.5)",
-            }}>
-                <Box sx={{
-                    width: "20%",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center'
-                }}>
-                    <ListItemAvatar sx={{
-                        textAlign: 'center'
-                    }}>
-                        <FaceIcon/>
-                    </ListItemAvatar>
-                    <Rating value={props.data.rating} readOnly/>
+            <ListItem alignItems="flex-start">
+                <Box
+                    sx={{
+                        alignItems: 'flex-start',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        alignContent: 'center',
+                        width: '100%',
+                        backgroundColor: '#282828',
+                        padding: 1,
+                        borderRadius: 5,
+                        boxShadow: '0px 5px 10px 0px rgba(0, 0, 0, 0.5)',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: '20%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}
+                    >
+                        <ListItemAvatar
+                            sx={{
+                                textAlign: 'center',
+                            }}
+                        >
+                            <FaceIcon />
+                        </ListItemAvatar>
+                        <Rating value={props.data.rating} readOnly />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '60%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'left',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}
+                    >
+                        <ListItemText
+                            primary={`Review for ${profName} (${courseTerm} ${courseYear}): `}
+                            secondary={props.data.text}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '20%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}
+                    >
+                        <ListItemText
+                            primary={`${likeDislikeRatio}% liked this`}
+                        />
+                        <ToggleButtonGroup
+                            exclusive
+                            value={likeDislikeButton}
+                            onChange={(_, newValue) => {
+                                // Normalize value
+                                let tempValue =
+                                    newValue === null ? 0 : newValue;
+                                // Send it to the dispatcher. State will be updated using useEffect hook.
+                                props.reviewDataDispatcher(
+                                    'update',
+                                    { like: tempValue },
+                                    props.data['_id']
+                                );
+                                if (newValue === null)
+                                    changeLikeDislikeValue(null);
+                            }}
+                        >
+                            <ToggleButton value={1}>
+                                <ThumbUpIcon />
+                            </ToggleButton>
+                            <ToggleButton value={-1}>
+                                <ThumbDownIcon />
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </Box>
                 </Box>
-                <Box sx={{
-                    width: "60%",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'left',
-                    justifyContent: 'center',
-                    alignSelf: 'center'
-                }}>
-                    <ListItemText 
-                        primary={`Review for ${profName} (${courseTerm} ${courseYear}): `}
-                        secondary={props.data.text}
-                    />
-                </Box>
-                <Box sx={{
-                    width: "20%",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center'
-                }}>
-                    <ListItemText primary={`${likeDislikeRatio}% liked this`} />
-                    <ToggleButtonGroup exclusive value={likeDislikeButton} onChange={(_, newValue) => {
-                        // Normalize value
-                        let tempValue = (newValue === null) ? 0 : newValue;
-                        // Send it to the dispatcher. State will be updated using useEffect hook.
-                        props.reviewDataDispatcher('update', {like: tempValue}, props.data["_id"]);
-                        if (newValue === null) changeLikeDislikeValue(null);
-                    }}>
-                        <ToggleButton value={1}><ThumbUpIcon/></ToggleButton>
-                        <ToggleButton value={-1}><ThumbDownIcon/></ToggleButton>
-                    </ToggleButtonGroup>
-                </Box>
-            </Box>
-        </ListItem>
+            </ListItem>
         </>
     );
 }
@@ -176,14 +214,18 @@ ReviewItem.propTypes = {
         professor: PropTypes.string.isRequired,
         course: PropTypes.string.isRequired,
     }).isRequired,
-    profData: PropTypes.arrayOf(PropTypes.shape({
-        profName: PropTypes.string,
-        profId: PropTypes.string,
-        courseData: PropTypes.arrayOf(PropTypes.shape({
-            courseId: PropTypes.string,
-            term: PropTypes.string,
-            year: PropTypes.number
-        }))
-    })),
-    reviewDataDispatcher: PropTypes.func.isRequired
-}
+    profData: PropTypes.arrayOf(
+        PropTypes.shape({
+            profName: PropTypes.string,
+            profId: PropTypes.string,
+            courseData: PropTypes.arrayOf(
+                PropTypes.shape({
+                    courseId: PropTypes.string,
+                    term: PropTypes.string,
+                    year: PropTypes.number,
+                })
+            ),
+        })
+    ),
+    reviewDataDispatcher: PropTypes.func.isRequired,
+};

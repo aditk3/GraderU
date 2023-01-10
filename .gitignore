@@ -3,3 +3,4 @@ config.env
 frontend/node_modules
 frontend/config.env
 .DS_Store
+.prettierrc

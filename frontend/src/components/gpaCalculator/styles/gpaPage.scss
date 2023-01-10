@@ -1,7 +1,7 @@
-.gpaPage{
+.gpaPage {
     text-align: center;
 
-    #description{
+    #description {
         font-weight: lighter;
         // width: 50%;
         display: flex;
@@ -10,7 +10,9 @@
     }
 }
 
-#course-search, #number-search, #prof-search{
+#course-search,
+#number-search,
+#prof-search {
     width: 250px;
 }
 
@@ -37,11 +39,10 @@
     padding-top: 20px;
 }
 
-
 //https://www.educative.io/answers/how-to-create-columns-in-html
 
 .row:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
 }

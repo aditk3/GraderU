@@ -1,13 +1,31 @@
-import { Box, Button, FormControl, FormHelperText, Input, InputLabel, MenuItem, Rating, Select, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormHelperText,
+    Input,
+    InputLabel,
+    MenuItem,
+    Rating,
+    Select,
+    Typography,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-function handleTextChange(e, changeError, changeTextValue, changeTooltipMessage) {
+function handleTextChange(
+    e,
+    changeError,
+    changeTextValue,
+    changeTooltipMessage
+) {
     changeTextValue(e.target.value);
     if (e.target.value.length === 0 || e.target.value.length > 240) {
         changeError(true);
         if (e.target.value.length > 240) {
-            changeTooltipMessage(`Max character limit is 240. Current Length: ${e.target.value.length}`);
+            changeTooltipMessage(
+                `Max character limit is 240. Current Length: ${e.target.value.length}`
+            );
         } else {
             changeTooltipMessage('Min character limit is 1');
         }
@@ -16,7 +34,15 @@ function handleTextChange(e, changeError, changeTextValue, changeTooltipMessage)
     }
 }
 
-async function handleSubmitReview(reviewDispatcher, filterField, filterId, constantField, constantId, ratings, text) {
+async function handleSubmitReview(
+    reviewDispatcher,
+    filterField,
+    filterId,
+    constantField,
+    constantId,
+    ratings,
+    text
+) {
     // Generate output packet
     let packet = {};
     packet[filterField] = filterId;
@@ -33,7 +59,9 @@ export default function CreateReviewComponent(props) {
     const [rating, changeRatingValue] = useState(5);
     const [textValue, changeTextValue] = useState('');
     const [error, changeError] = useState(true);
-    const [tooltipMessage, changeTooltipMessage] = useState('Min character limit is 1');
+    const [tooltipMessage, changeTooltipMessage] = useState(
+        'Min character limit is 1'
+    );
 
     // States for each of the dropdown
     const [filterValue, changeFilterValue] = useState('');
@@ -45,7 +73,7 @@ export default function CreateReviewComponent(props) {
 
     // Update main filter dropdown list
     useEffect(() => {
-        let tempList = []
+        let tempList = [];
         props.filterList.forEach((val, idx) => {
             tempList.push(
                 <MenuItem value={val['profId']} key={idx}>
@@ -71,13 +99,18 @@ export default function CreateReviewComponent(props) {
                 });
                 break;
             }
-        };
+        }
 
         // Update Dropdowns
         changeTermYearDropdownList(termYearList);
     }, [filterValue]);
 
-    let tooltip = (error === true) ? (<FormHelperText>{tooltipMessage}</FormHelperText>) : (<></>);
+    let tooltip =
+        error === true ? (
+            <FormHelperText>{tooltipMessage}</FormHelperText>
+        ) : (
+            <></>
+        );
     return (
         <>
             <Box className="createReviewHeadingDiv">
@@ -86,21 +119,25 @@ export default function CreateReviewComponent(props) {
             <Box className="createReviewToolsDiv">
                 <Box className="ratingsDiv">
                     <Typography>Choose Rating</Typography>
-                    <Rating className="ratingsTool" value={rating} onChange={(_, newValue) => {
-                        if (newValue !== null) {
-                            changeRatingValue(newValue);
-                        }
-                    }}/>
+                    <Rating
+                        className="ratingsTool"
+                        value={rating}
+                        onChange={(_, newValue) => {
+                            if (newValue !== null) {
+                                changeRatingValue(newValue);
+                            }
+                        }}
+                    />
                 </Box>
-                
+
                 <FormControl className="createFilterFormControl">
                     <InputLabel>{`Choose ${props.filterField}`}</InputLabel>
                     <Select
                         label={`Choose ${props.filterField}`}
                         value={filterValue}
                         onChange={(e) => {
-                            changeFilterValue(e.target.value)
-                            changeTermYearValue('')
+                            changeFilterValue(e.target.value);
+                            changeTermYearValue('');
                         }}
                         autoWidth
                     >
@@ -113,7 +150,7 @@ export default function CreateReviewComponent(props) {
                         label={`Choose Term-Year`}
                         value={termYearValue}
                         onChange={(e) => {
-                            changeTermYearValue(e.target.value)
+                            changeTermYearValue(e.target.value);
                         }}
                         autoWidth
                     >
@@ -122,11 +159,22 @@ export default function CreateReviewComponent(props) {
                 </FormControl>
             </Box>
             <Box className="createReviewTextBoxDiv">
-                <FormControl variant="standard" error={error} className="reviewTextBox">
+                <FormControl
+                    variant="standard"
+                    error={error}
+                    className="reviewTextBox"
+                >
                     <InputLabel>Enter Review</InputLabel>
                     <Input
                         value={textValue}
-                        onChange={(e) => {handleTextChange(e, changeError, changeTextValue, changeTooltipMessage)}}
+                        onChange={(e) => {
+                            handleTextChange(
+                                e,
+                                changeError,
+                                changeTextValue,
+                                changeTooltipMessage
+                            );
+                        }}
                         multiline
                         fullWidth
                     />
@@ -134,10 +182,24 @@ export default function CreateReviewComponent(props) {
                 </FormControl>
             </Box>
             <Box className="createReviewSubmitButtonDiv">
-                <Button variant="contained" className='reviewCloseButton' disabled={error} onClick={async () => {
-                    await handleSubmitReview(props.reviewDispatcher, props.filterField, filterValue, props.constantField, termYearValue, rating, textValue, props.closePopup);
-                    props.closeButtonfn();
-                }}>
+                <Button
+                    variant="contained"
+                    className="reviewCloseButton"
+                    disabled={error}
+                    onClick={async () => {
+                        await handleSubmitReview(
+                            props.reviewDispatcher,
+                            props.filterField,
+                            filterValue,
+                            props.constantField,
+                            termYearValue,
+                            rating,
+                            textValue,
+                            props.closePopup
+                        );
+                        props.closeButtonfn();
+                    }}
+                >
                     Submit
                 </Button>
             </Box>
@@ -148,15 +210,19 @@ export default function CreateReviewComponent(props) {
 CreateReviewComponent.propTypes = {
     filterField: PropTypes.string.isRequired,
     constantField: PropTypes.string.isRequired,
-    filterList: PropTypes.arrayOf(PropTypes.shape({
-        profId: PropTypes.string.isRequired,
-        profName: PropTypes.string.isRequired,
-        courseData: PropTypes.arrayOf(PropTypes.shape({
-            courseId: PropTypes.string.isRequired,
-            year: PropTypes.number.isRequired,
-            term: PropTypes.string.isRequired
-        })).isRequired
-    })).isRequired,
+    filterList: PropTypes.arrayOf(
+        PropTypes.shape({
+            profId: PropTypes.string.isRequired,
+            profName: PropTypes.string.isRequired,
+            courseData: PropTypes.arrayOf(
+                PropTypes.shape({
+                    courseId: PropTypes.string.isRequired,
+                    year: PropTypes.number.isRequired,
+                    term: PropTypes.string.isRequired,
+                })
+            ).isRequired,
+        })
+    ).isRequired,
     reviewDispatcher: PropTypes.func.isRequired,
-    closeButtonfn: PropTypes.func.isRequired
-}
+    closeButtonfn: PropTypes.func.isRequired,
+};

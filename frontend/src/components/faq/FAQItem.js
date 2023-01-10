@@ -1,5 +1,5 @@
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import { ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import React from 'react';
 
 function FAQItem(props) {
@@ -18,7 +18,7 @@ function FAQItem(props) {
                 />
             </ListItem>
         </>
-    )
+    );
 }
 
-export default FAQItem
+export default FAQItem;

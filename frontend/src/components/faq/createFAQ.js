@@ -1,14 +1,30 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, FormControl, FormHelperText, IconButton, Input, InputLabel, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormHelperText,
+    IconButton,
+    Input,
+    InputLabel,
+    Typography,
+} from '@mui/material';
+import { useState } from 'react';
 import './styles/styles.scss';
 
-function handleTextChange(e, changeError, changeTextValue, changeTooltipMessage) {
+function handleTextChange(
+    e,
+    changeError,
+    changeTextValue,
+    changeTooltipMessage
+) {
     changeTextValue(e.target.value);
     if (e.target.value.length === 0 || e.target.value.length > 240) {
         changeError(true);
         if (e.target.value.length > 240) {
-            changeTooltipMessage(`Max character limit is 240. Current Length: ${e.target.value.length}`);
+            changeTooltipMessage(
+                `Max character limit is 240. Current Length: ${e.target.value.length}`
+            );
         } else {
             changeTooltipMessage('Min character limit is 1');
         }
@@ -31,19 +47,30 @@ function CreateFAQ(props) {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [error, changeError] = useState(true);
-    const [tooltipMessage, changeTooltipMessage] = useState('Min character limit is 1');
+    const [tooltipMessage, changeTooltipMessage] = useState(
+        'Min character limit is 1'
+    );
 
-    let tooltip = (error === true) ? (<FormHelperText>{tooltipMessage}</FormHelperText>) : (<></>);
+    let tooltip =
+        error === true ? (
+            <FormHelperText>{tooltipMessage}</FormHelperText>
+        ) : (
+            <></>
+        );
 
     return (
         <>
-            <Box className="createReviewHeadingDiv"
+            <Box
+                className="createReviewHeadingDiv"
                 sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                }}>
+                }}
+            >
                 <Typography variant="h4">Write an FAQ!</Typography>
-                <IconButton aria-label="addReview" className='ratingsAddButton'
+                <IconButton
+                    aria-label="addReview"
+                    className="ratingsAddButton"
                     onClick={() => {
                         props.modalDiv.style.display = 'none';
                     }}
@@ -51,16 +78,27 @@ function CreateFAQ(props) {
                         justifyContent: 'flex-end',
                     }}
                 >
-                    < CloseIcon />
+                    <CloseIcon />
                 </IconButton>
             </Box>
 
             <Box className="createReviewTextBoxDiv">
-                <FormControl variant="standard" error={error} className="reviewTextBox">
+                <FormControl
+                    variant="standard"
+                    error={error}
+                    className="reviewTextBox"
+                >
                     <InputLabel>Enter Question</InputLabel>
                     <Input
                         value={question}
-                        onChange={(e) => { handleTextChange(e, changeError, setQuestion, changeTooltipMessage) }}
+                        onChange={(e) => {
+                            handleTextChange(
+                                e,
+                                changeError,
+                                setQuestion,
+                                changeTooltipMessage
+                            );
+                        }}
                         multiline
                         fullWidth
                     />
@@ -68,11 +106,22 @@ function CreateFAQ(props) {
                 </FormControl>
             </Box>
             <Box className="createReviewTextBoxDiv">
-                <FormControl variant="standard" error={error} className="reviewTextBox">
+                <FormControl
+                    variant="standard"
+                    error={error}
+                    className="reviewTextBox"
+                >
                     <InputLabel>Enter Answer</InputLabel>
                     <Input
                         value={answer}
-                        onChange={(e) => { handleTextChange(e, changeError, setAnswer, changeTooltipMessage) }}
+                        onChange={(e) => {
+                            handleTextChange(
+                                e,
+                                changeError,
+                                setAnswer,
+                                changeTooltipMessage
+                            );
+                        }}
                         multiline
                         fullWidth
                     />
@@ -80,14 +129,23 @@ function CreateFAQ(props) {
                 </FormControl>
             </Box>
             <Box className="createReviewSubmitButtonDiv">
-                <Button variant="contained" className='reviewCloseButton' disabled={error}
-                    onClick={async () => { await handleSubmitFAQ(props.faqDispatcher, question, answer); }}
+                <Button
+                    variant="contained"
+                    className="reviewCloseButton"
+                    disabled={error}
+                    onClick={async () => {
+                        await handleSubmitFAQ(
+                            props.faqDispatcher,
+                            question,
+                            answer
+                        );
+                    }}
                 >
                     Submit
                 </Button>
             </Box>
         </>
-    )
+    );
 }
 
-export default CreateFAQ
+export default CreateFAQ;

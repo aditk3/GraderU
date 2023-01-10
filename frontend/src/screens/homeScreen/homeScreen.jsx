@@ -1,29 +1,29 @@
-import { Alert } from "@mui/material";
-import Container from "@mui/material/Container";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
-import Header from "../../components/header/header";
-import HomeScreenCourseItem from "../../components/homeScreen/homeScreenCourseItem";
-import HomeScreenProfItem from "../../components/homeScreen/homeScreenProfItem";
-import "./homeScreen.css";
+import { Alert } from '@mui/material';
+import Container from '@mui/material/Container';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import React, { useState } from 'react';
+import Header from '../../components/header/header';
+import HomeScreenCourseItem from '../../components/homeScreen/homeScreenCourseItem';
+import HomeScreenProfItem from '../../components/homeScreen/homeScreenProfItem';
+import './homeScreen.css';
 
 function HomeScreen() {
     const [data, setData] = useState({ data: [] });
-    const [filter, setFilter] = React.useState("Professor");
-    const [err, setErr] = useState("");
+    const [filter, setFilter] = React.useState('Professor');
+    const [err, setErr] = useState('');
 
     const handleProfAPICall = async (name) => {
         try {
             const response = await fetch(
-                "https://graderu.herokuapp.com/api/v1/professors?name=" + name,
+                'https://graderu.herokuapp.com/api/v1/professors?name=' + name,
                 {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                        Accept: "application/json",
+                        Accept: 'application/json',
                     },
                 }
             );
@@ -42,16 +42,16 @@ function HomeScreen() {
 
     const handleCourseAPICall = async (input) => {
         try {
-            const words = input.split(" ");
+            const words = input.split(' ');
             const response = await fetch(
-                "https://graderu.herokuapp.com/api/v1/courses?subject=" +
-                words[0] +
-                "&number=" +
-                words[1],
+                'https://graderu.herokuapp.com/api/v1/courses?subject=' +
+                    words[0] +
+                    '&number=' +
+                    words[1],
                 {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                        Accept: "application/json",
+                        Accept: 'application/json',
                     },
                 }
             );
@@ -64,7 +64,7 @@ function HomeScreen() {
             if (result.data.length === 0) {
                 setErr('No results found');
             } else {
-                setErr("");
+                setErr('');
             }
 
             setData(result);
@@ -74,11 +74,11 @@ function HomeScreen() {
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === "Enter" && event.target.value !== "") {
-            if (filter === "Professor") {
+        if (event.key === 'Enter' && event.target.value !== '') {
+            if (filter === 'Professor') {
                 setData({ data: [] });
                 handleProfAPICall(event.target.value);
-            } else if (filter === "Course") {
+            } else if (filter === 'Course') {
                 setData({ data: [] });
                 handleCourseAPICall(event.target.value);
             }
@@ -96,26 +96,30 @@ function HomeScreen() {
             <Container
                 className="homescreen-container"
                 sx={{
-                    backgroundColor: "primary.background",
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingBottom: "100%",
+                    backgroundColor: 'primary.background',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    paddingBottom: '100%',
                 }}
             >
-                <div className="homescreen-search" >
+                <div className="homescreen-search">
                     <TextField
                         id="search-bar"
                         className="homescreen-searchbox"
                         variant="outlined"
                         placeholder={
-                            filter === "Professor" ? "Caesar, Matthew..." : "CS 374..."
+                            filter === 'Professor'
+                                ? 'Caesar, Matthew...'
+                                : 'CS 374...'
                         }
                         onKeyDown={handleKeyDown}
                     />
 
                     <div className="homescreen-search-params">
                         <FormControl>
-                            <InputLabel id="home-search-filter-label">Search Filter</InputLabel>
+                            <InputLabel id="home-search-filter-label">
+                                Search Filter
+                            </InputLabel>
                             <Select
                                 labelId="home-search-filter-label"
                                 id="demo-simple-select"
@@ -124,23 +128,25 @@ function HomeScreen() {
                                 className="homescreen-filters"
                                 onChange={handleChangeFilter}
                             >
-                                <MenuItem value={"Professor"}>Professor</MenuItem>
-                                <MenuItem value={"Course"}>Course</MenuItem>
+                                <MenuItem value={'Professor'}>
+                                    Professor
+                                </MenuItem>
+                                <MenuItem value={'Course'}>Course</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
                 </div>
 
-                {filter === "Professor" ? (
+                {filter === 'Professor' ? (
                     <div
                         className="homescreen-results"
                         style={
                             data.data.length > 0
                                 ? {
-                                    border: "3px solid black",
-                                    boxShadow: "5px 5px",
-                                    overflowY: "scroll",
-                                }
+                                      border: '3px solid black',
+                                      boxShadow: '5px 5px',
+                                      overflowY: 'scroll',
+                                  }
                                 : {}
                         }
                     >
@@ -158,21 +164,19 @@ function HomeScreen() {
                         style={
                             data.data.length > 0
                                 ? {
-                                    border: "3px solid black",
-                                    boxShadow: "5px 5px",
-                                    overflowY: "scroll",
-                                }
+                                      border: '3px solid black',
+                                      boxShadow: '5px 5px',
+                                      overflowY: 'scroll',
+                                  }
                                 : {}
                         }
                     >
                         <div className="homescreen-results-list">
-                            {
-                                data.data.length > 0 ? (
-                                    <HomeScreenCourseItem data={data.data[0]} />
-                                ) : (err !== "") ? (
-                                    <Alert severity="error">No results found</Alert>
-                                ) : (null)
-                            }
+                            {data.data.length > 0 ? (
+                                <HomeScreenCourseItem data={data.data[0]} />
+                            ) : err !== '' ? (
+                                <Alert severity="error">No results found</Alert>
+                            ) : null}
                         </div>
                     </div>
                 )}
