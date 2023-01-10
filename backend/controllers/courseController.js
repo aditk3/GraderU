@@ -1,5 +1,5 @@
-const factory = require("./handlerFactory");
-const Course = require("../models/courseModel");
+const factory = require('./handlerFactory');
+const Course = require('../models/courseModel');
 
 exports.getAllCourses = factory.getAll(Course);
 exports.getCourse = factory.getOne(Course);
