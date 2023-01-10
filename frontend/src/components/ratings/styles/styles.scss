@@ -1,0 +1,86 @@
+.ratingsButtonsDiv {
+    z-index: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    .ratingsAddButton {
+        align-self: center;
+    }
+    .ratingsFormControl {
+        align-self: center;
+        width: 30%;
+    }
+}
+
+.createModal {
+    z-index: 1;
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    .ratingsCreateReview {
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+    }
+}
+
+.createReviewHeadingDiv {
+    width: 100%;
+    text-align: center;
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
+}
+
+.createReviewToolsDiv {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    .ratingsDiv {
+        text-align: center;
+        align-self: center;
+        p {
+            margin: 0;
+        }
+        .ratingsTool {
+            align-self: center;
+        }
+    }
+    .createFilterFormControl {
+        width: 35%;
+        align-self: center;
+    }
+    .createYearTermFormControl {
+        width: 35%;
+        align-self: center;
+    }
+    margin-bottom: 20px;
+}
+
+.createReviewTextBoxDiv {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 50px;
+    .reviewTextBox {
+        width: 100%;
+    }
+}
+
+.createReviewSubmitButtonDiv {
+    display: flex;
+    align-self: flex-start;
+    justify-content: right;
+    .reviewCloseButton {
+        align-self: center;
+    }
+}

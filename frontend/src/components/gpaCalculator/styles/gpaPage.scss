@@ -1,0 +1,54 @@
+.gpaPage{
+    text-align: center;
+
+    #description{
+        font-weight: lighter;
+        // width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+#course-search, #number-search, #prof-search{
+    width: 250px;
+}
+
+.PGpa {
+    font-size: 35px;
+    padding-top: 40px;
+}
+
+.GPAVal {
+    font-size: 60px;
+}
+
+.SearchBar {
+    align-items: center;
+    width: 500px;
+}
+
+.TopDiv {
+    text-align: center;
+}
+
+.ButtonDiv {
+    text-align: center;
+    padding-top: 20px;
+}
+
+
+//https://www.educative.io/answers/how-to-create-columns-in-html
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 3%;
+}

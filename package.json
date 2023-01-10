@@ -1,0 +1,53 @@
+{
+  "name": "graderu",
+  "version": "1.0.0",
+  "description": "UIUC CS409 Final Project",
+  "main": "server.js",
+  "homepage": "/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-watch": "nodemon server.js",
+    "start": "node server.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "start-frontend": "cd frontend && npm start",
+    "build-frontend": "cd frontend && npm install && npm run build",
+    "dev": "concurrently \"npm run start-watch\" \"npm run start-frontend\""
+  },
+  "author": "Yash Gupta, Panav Munshi, Arushi Biswas, Adit Kapoor, Kartik Mehra",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.5.0",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.16",
+    "@mui/material": "^5.10.17",
+    "@mui/styled-engine": "^5.10.16",
+    "@sendgrid/mail": "^7.7.0",
+    "axios": "^1.2.1",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2",
+    "morgan": "^1.10.0",
+    "prop-types": "^15.8.1",
+    "react-chartjs-2": "^5.0.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.5",
+    "react-scripts": "^5.0.1",
+    "reactjs-popup": "^2.0.5",
+    "sass": "^1.56.2",
+    "styled-components": "^5.3.6",
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
+  }
+}

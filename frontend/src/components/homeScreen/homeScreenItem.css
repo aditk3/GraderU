@@ -1,0 +1,16 @@
+.homescreen-search-item-container {
+    max-height: 50px;
+    border: 3px solid black;
+    display: flex;
+    padding: 20px;
+    justify-content: flex-start;
+    background-color: white;
+    align-items: center;
+    cursor: pointer;
+}
+
+.homescreen-search-item-container p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
